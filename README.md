@@ -90,9 +90,9 @@ Internally, Articulate.js clones the matched set of elements and all their desce
 | `data-articulate-ignore` | Content from that DOM element and its descendents are ignored |
 | `data-articulate-recognize` | Content from that DOM element is spoken, overriding the default |
 | `data-articulate-spell` | Content from that DOM element is spelled out |
-| `data-articulate-prepend=*text*` | Specified *text* is spoken prior to the content of its DOM element |
-| `data-articulate-append=*text*` | Specified *text* is spoken after to the content of its DOM element |
-| `data-articulate-swap=*text*` | Specified *text* is spoken in place of the content of its DOM element |
+| `data-articulate-prepend=text` | Specified *text* is spoken prior to the content of its DOM element |
+| `data-articulate-append=text` | Specified *text* is spoken after to the content of its DOM element |
+| `data-articulate-swap=text` | Specified *text* is spoken in place of the content of its DOM element |
 
 
 ### Miscellaneous
@@ -151,7 +151,34 @@ $().articulate('customize','ol','Start of numbered List.','End of Numbered List'
 
 --------------
 
+```html
+<div class="speech">
+  <h1 data-articulate-prepend="An analysis of">The Gettysburg Address</h1>
+  
+  <p>Despite the speech's prominent place in the history and popular culture 
+  of the <span data-articulate-append="of America">United States</span>, the 
+  exact wording and location of the speech are disputed. The five known manuscripts 
+  of the Gettysburg Address in Lincoln's hand differ in a number of details, and 
+  also differ from contemporary newspaper reprints of the speech.</p>
+  
+  <p><span data-articulate-swap="Experienced researchers locate">Modern scholarship locates</span> 
+  the speakers' platform 40 yards <span data-articulate-ignore>(or more)</span> 
+  away from the Traditional Site within Soldiers' National Cemetery at 
+  the Soldiers' National Monument and entirely within private, adjacent 
+  Evergreen Cemetery.</p>
+  
+  <!-- <articulate>This is the end of the article.</articulate> -->
+</div>
+```
 
+The above will be spoken as:
+
+> An analysis of The Gettysburg Address. Despite the speech's prominent place in the history and popular culture 
+  of the United States of America, the exact wording and location of the speech are disputed. The five known manuscripts 
+  of the Gettysburg Address in Lincoln's hand differ in a number of details, and also differ from contemporary newspaper 
+  reprints of the speech. Experienced researchers locate the speakers' platform 40 yards away from the Traditional Site 
+  within Soldiers' National Cemetery at the Soldiers' National Monument and entirely within private, adjacent 
+  Evergreen Cemetery. This is the end of the article.
 
 
 
