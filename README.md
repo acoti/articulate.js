@@ -181,4 +181,16 @@ The above will be spoken as:
   Evergreen Cemetery. This is the end of the article.
 
 
+## Share Links
+
+[Facebook](https://www.facebook.com/sharer.php?u=https%3A%2F%2Fgithub.com%2Facoti%2Farticulate.js)
+
+[Twitter](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Facoti%2Farticulate.js&text=A%20jQuery%20plugin%20that%20lets%20the%20browser%20speak%20to%20you.)
+
+[LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fgithub.com%2Facoti%2Farticulate.js)
+
+
+## About the Author
+
+I've been a freelance front-end Web developer for over eighteen years. My availability varies, but feel free to contact me if you're interested in the services I offer. My Web site with portfolio and client list is at [www.purefreedom.com](http://www.purefreedom.com). Also, take a look at some recent articles I've written for [CSS-Tricks](https://css-tricks.com/author/adamcoti/).
 
