@@ -171,7 +171,7 @@ $().articulate('customize','ol','Start of numbered List.','End of Numbered List'
 </div>
 ```
 
-The above will be spoken as:
+Using `$('div.speech').articulate('speak');` The above will be spoken as:
 
 > An analysis of The Gettysburg Address. Despite the speech's prominent place in the history and popular culture 
   of the United States of America, the exact wording and location of the speech are disputed. The five known manuscripts 
