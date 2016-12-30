@@ -58,7 +58,7 @@ Internally, Articulate.js clones the matched set of elements and all their desce
 | `$().articulate('pitch', number);` | Sets the pitch of the speaking voice; default = 1.0; range = [0 - 2] |
 | `$().articulate('volume', number);` | Sets the volume of the speaking voice; default = 1.0; range = [0 - 1] |
 
-**Note:** Omitting number resets the parameter to its default value
+**Note:** Omitting number resets the parameter to its default value; changes take effect only when next speak call is made
 
 
 ### Read-Only Attributes
