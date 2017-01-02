@@ -1,6 +1,6 @@
 /* Articulate.js (1.0.0). (C) 2016 Adam Coti. MIT @license: en.wikipedia.org/wiki/MIT_License
 
-   See Github page at: https://github.com/acoti/articulate
+   See Github page at: https://github.com/acoti/articulate.js
    See Web site at: http://articulate.purefreedom.com
 
 */
@@ -42,7 +42,7 @@
 
 
     // Hated to do a browser detect, but Windows Chrome is a bit buggy and inconsistent with the default
-    // voice that it uses unless that default voice ('native') is specified directly -- see line 128.
+    // voice that it uses unless that default voice ('native') is specified directly -- see line 136.
     // Every browser is fine with 'native' specified directly except Microsoft Edge, which is why
     // this browser detect ened up necessary for the time being. I think this will all resolve itself
     // in future browser versions, but for now, I felt this was the safest solution. But I feel dirty.
