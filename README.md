@@ -3,6 +3,7 @@
 Articulate.js, a jQuery plugin, enables developers, with as little as one line of code, to create links that allow users to click, sit back, and listen to the browser read aloud the important content on a Web page. In some ways, it can turn a thoughtful essay or article into a mini podcast. And because it uses built-in JavaScript functionality, no browser extensions or other system software is needed.
 
 Read the featured article on [CSS Tricks](https://css-tricks.com/using-the-speech-synthesis-api-to-create-articulate-js/).
+
 Visit the [Articulate.js Web site](http://articulate.purefreedom.com) for more information.
 
 
