@@ -7,11 +7,18 @@ Read the featured article on [CSS Tricks](https://css-tricks.com/using-the-speec
 Visit the [Articulate.js Web site](http://articulate.purefreedom.com) for more information.
 
 
+## Most Recent Update
+
+**v1.1.0:** Added methods that retrieve a list of available voices and sets the voice based on the name or language. See CodePen demo and documentation below.
+
+
 ## CodePen Demos
 
 [Basic Functions](http://codepen.io/adamcoti/pen/zoybvQ/)
 
 [Voice Parameters](http://codepen.io/adamcoti/pen/GNPPrY/)
+
+[Get and Set Voices](http://codepen.io/adamcoti/pen/JEYmge/)
 
 [Text Manipulation](http://codepen.io/adamcoti/pen/eBbXJx/)
 
@@ -72,6 +79,27 @@ Internally, Articulate.js clones the matched set of elements and all their desce
 | `$().articulate('isPaused');` | Returns (true / false) specifying whether speaking is paused |
 
 **Note:** `$().articulate('isSpeaking');` returns the value of true even when paused
+
+
+### Get and Set Voices
+
+| Method | Description |
+| ------------- | ------------- |
+| `$().articulate('getVoices');` | Returns an array of voice objects; each object has two properties: name and language |
+| `$().articulate('getVoices',selector,text);` | Populates the DOM element(s) *selector* with a dropdown menu for voice selection; optional *text* overwrites default dropdown menu instruction |
+| `$().articulate('setVoice','name',voice);` | Sets voice; must match exactly one of the names returned when using `getVoices` |
+| `$().articulate('setVoice','language',twoDigit);` | Sets voice by finding the first voice that matches the *twoDigit* language code; this is case-insensitive |
+| `$().articulate('setVoice','language',code);` | Sets voice by finding the first voice that exactly matches the complete language code |
+
+**Note:** Default text for `getVoices` dropdown menu is: 'Choose a Different Voice'.
+
+**Note:** Language codes consist of two-characters that specify the language, followed by a hyphen, followed by additional characters that specify the particular country or regional dialect of that language. For example, the codes "en-US" and "en-GB" are both English language, but each represent a different country.
+
+**Note:** Setting a voice by specifying only a two-digit language code is useful for when you have text on the page in another language, but don't want to bother checking to see if that language is available. For example, a page otherwise in English may have a paragraph in German that you want spoken. That paragraph can have a link like this:
+
+`$('p').articulate('setVoice','language','de').articulate('speak');`
+
+If the German language is available, it will be appropriately spoken. If not, the current voice will remain.
 
 
 ### Text Manipulation
@@ -192,7 +220,7 @@ Using `$('div.speech').articulate('speak');` The above will be spoken as:
 [LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fgithub.com%2Facoti%2Farticulate.js)
 
 
-## About the Author
+## About Adam Coti
 
 I've been a freelance front-end Web developer for over eighteen years. My availability varies, but feel free to contact me if you're interested in the services I offer. My Web site with portfolio and client list is at [www.purefreedom.com](http://www.purefreedom.com). Also, take a look at some recent articles I've written for [CSS-Tricks](https://css-tricks.com/author/adamcoti/).
 
