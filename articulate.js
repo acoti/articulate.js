@@ -1,4 +1,4 @@
-/* Articulate.js (1.0.0). (C) 2016 Adam Coti. MIT @license: en.wikipedia.org/wiki/MIT_License
+/* Articulate.js (1.1.0). (C) 2017 Adam Coti. MIT @license: en.wikipedia.org/wiki/MIT_License
 
    See Github page at: https://github.com/acoti/articulate.js
    See Web site at: http://articulate.purefreedom.com
@@ -21,14 +21,42 @@
     var rateUserDefault;
     var pitchUserDefault;
     var volumeUserDefault;
+    var voiceUserDefault;
 
     var rate = rateDefault;
     var pitch = pitchDefault;
     var volume = volumeDefault;
+    var voices = new Array();
 
     function voiceTag(prepend,append) {
       this.prepend = prepend;
       this.append = append;
+    }
+
+    function voiceObj(name,language) {
+      this.name = name;
+      this.language = language;
+    }
+
+
+
+
+
+    // This populates the "voices" array with objects that represent the available voices in the 
+    // current browser. Each object has two properties: name and language. It is loaded 
+    // asynchronously in deference to Chrome.
+
+    function populateVoiceList() {
+        var systemVoices = speechSynthesis.getVoices();
+        for(var i = 0; i < systemVoices.length ; i++) {
+            voices.push(new voiceObj(systemVoices[i].name,systemVoices[i].lang));
+        }
+    }
+
+    populateVoiceList();
+
+    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoiceList;
     }
 
 
@@ -42,7 +70,7 @@
 
 
     // Hated to do a browser detect, but Windows Chrome is a bit buggy and inconsistent with the default
-    // voice that it uses unless that default voice ('native') is specified directly -- see line 136.
+    // voice that it uses unless that default voice ('native') is specified directly -- see line 165.
     // Every browser is fine with 'native' specified directly except Microsoft Edge, which is why
     // this browser detect ened up necessary for the time being. I think this will all resolve itself
     // in future browser versions, but for now, I felt this was the safest solution. But I feel dirty.
@@ -127,6 +155,7 @@
             // console.log(toSpeak);
 
             // This is where the magic happens. Well, not magic, but at least we can finally hear something.
+            // After the line that fixes the Windows Chrome quirk, the custom voice is set if one has been chosen.
             
             speech = new SpeechSynthesisUtterance();
             speech.text = toSpeak;
@@ -134,6 +163,7 @@
             speech.pitch = pitch;
             speech.volume = volume;
             if (isChrome) { speech.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == "native"; })[0]; };
+            if (voiceUserDefault !== undefined) { speech.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == voiceUserDefault; })[0]; };
             window.speechSynthesis.speak(speech);
 
 
@@ -418,27 +448,33 @@
             return this;
         },
 
+
         resume : function() {
             window.speechSynthesis.resume();
             return this;
         },
+
 
         stop : function() {
             window.speechSynthesis.cancel();
             return this;
         },
 
+
         enabled : function() {
             return ("speechSynthesis" in window);
         },
+
 
         isSpeaking : function() {
             return (window.speechSynthesis.speaking);
         },
 
+
         isPaused : function() {
             return (window.speechSynthesis.paused);
         },
+
 
         rate : function() {
             var num = arguments[0];
@@ -451,6 +487,7 @@
             return this;
         },
 
+
         pitch : function() {
             var num = arguments[0];
             if ((num >= 0.1) && (num <= 2)) {
@@ -461,6 +498,7 @@
             };
             return this;
         },
+
 
         volume : function() {
             var num = arguments[0];
@@ -473,6 +511,7 @@
             return this;
         },
 
+
         ignore : function() {
             var len = arguments.length;
             ignoreTagsUser.length = 0;
@@ -483,6 +522,7 @@
             return this;
         },
 
+
         recognize : function() {
             var len = arguments.length;
             recognizeTagsUser.length = 0;
@@ -492,6 +532,7 @@
             };
             return this;
         },
+
 
         replace : function() {
             var len = arguments.length;
@@ -504,6 +545,7 @@
             };
             return this;
         },
+
 
         customize : function() {
             var len = arguments.length;
@@ -520,6 +562,103 @@
             };
             return this;
         },
+
+        
+        getVoices : function() {
+
+
+            // If no arguments, then the user has requested the array of voices populated earlier.
+            
+            if (arguments.length == 0) {
+                return voices;
+            };
+
+
+            // If there's another argument, we'll assume it's a jQuery selector designating where to put the dropdown menu.
+            // And if there's a third argument, that will be custom text for the dropdown menu.
+            // Then we'll create a dropdown menu with the voice names and, in parenthesis, the language code.
+            
+            var obj = jQuery(arguments[0]);
+            var customTxt = "Choose a Different Voice";
+
+            if (arguments[1] !== undefined) {
+                customTxt = arguments[1];
+            };
+
+            obj.append(jQuery("<select id='voiceSelect'><option value='none'>" + customTxt + "</option></select>"));
+            for(var i = 0; i < voices.length ; i++) {
+                var option = document.createElement('option');
+                option.textContent = voices[i].name + ' (' + voices[i].language + ')';
+                option.setAttribute('value', voices[i].name);
+                option.setAttribute('data-articulate-language', voices[i].language);
+                obj.find("select").append(option);
+            }
+
+
+            // Add an onchange event to the dropdown menu.
+            
+            obj.on('change', function() {
+                jQuery(this).find("option:selected").each(function() {
+                    if (jQuery(this).val() != "none") {
+                        voiceUserDefault = jQuery(this).val();
+                    }
+                });
+            });
+            return this;
+        },
+
+
+        setVoice : function() {
+
+
+            // The setVoice function has to have two attributes -- if not, exit the function.
+            
+            if (arguments.length < 2) {
+                return this
+            }
+
+            var requestedVoice, requestedLanguage;
+
+
+            // User wants to change the voice directly. If that name indeed exists, update the "voiceUserDefault" variable.
+            
+            if (arguments[0] == "name") {
+                requestedVoice = arguments[1];
+                for (var i = 0; i < voices.length; i++) {
+                    if (voices[i].name == requestedVoice) {
+                        voiceUserDefault = requestedVoice;
+                    };
+                };
+            };
+
+
+            // User wants to change the voice by only specifying the first two characters of the language code. Case insensitive.
+            
+            if (arguments[0] == "language") {
+                requestedLanguage = arguments[1].toUpperCase();
+                if (requestedLanguage.length == 2) {
+                    for (var i = 0; i < voices.length; i++) {
+                        if (voices[i].language.substring(0,2).toUpperCase() == requestedLanguage) {
+                            voiceUserDefault = voices[i].name;
+                            break
+                        };
+                    };
+                } else {
+
+
+                    // User wants to change the voice by specifying the complete language code.
+            
+                    for (var i = 0; i < voices.length; i++) {
+                        if (voices[i].language == requestedLanguage) {
+                            voiceUserDefault = voices[i].name;
+                            break
+                        };
+                    };
+                }
+            };
+            return this;
+        },
+
     };
 
 
